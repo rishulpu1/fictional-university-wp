@@ -24,7 +24,7 @@ function university_post_types(){
     register_post_type('program', array(
         'supports' => array('title', 'editor'),
         'rewrite' => array(
-            'slug' => 'prorams'
+            'slug' => 'programs'
         ),
         'has_archive' => true,
         'public' => true,

@@ -44,7 +44,9 @@ while(have_posts()){
                 )
               )
             ));
-
+            if($homePageEvents->have_posts()){
+            echo '<hr class="section-break">';
+            echo '<h2 class="headline headline--medium"> Upcoming ' . get_the_title() . ' Events </h2>';
             while($homePageEvents->have_posts()){
               $homePageEvents->the_post();?>
                 <div class="event-summary">
@@ -69,7 +71,7 @@ while(have_posts()){
                           } ?> <a href="<?php echo get_post_type_archive_link('event'); ?>" class="nu gray">Learn more</a></p>
                   </div>
                 </div>
-            <?php } wp_reset_postdata();
+            <?php } } wp_reset_postdata();
           ?>
     </div>
 
