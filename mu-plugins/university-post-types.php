@@ -40,7 +40,7 @@ function university_post_types(){
     ));
     //Professor Post Type
     register_post_type('professor', array(
-        'suopports' => array('title', 'editor'),
+        'suopports' => array('title', 'editor', 'thumbnail'),
         'public' => true,
         'show_in_rest' => true,
         'labels' => array(
@@ -53,6 +53,7 @@ function university_post_types(){
         ),
         'menu_icon' => 'dashicons-welcome-learn-more'
     ));
+    add_post_type_support('professor', 'thumbnail');
 }
 
 add_action('init', 'university_post_types');
