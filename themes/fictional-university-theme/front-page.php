@@ -42,9 +42,6 @@ get_header();
             } wp_reset_postdata();
           ?>
 
-          
-          
-
           <p class="t-center no-margin"><a href="<?php echo site_url('/events') ?>" class="btn btn--blue">View All Events</a></p>
         </div>
       </div>
