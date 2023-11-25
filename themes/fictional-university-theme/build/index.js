@@ -115,11 +115,16 @@ class Search {
     // this.openButton = document.querySelector('.js-search-trigger');
     // this.closeButton = document.querySelector('.search-overlay__close');
     // this.searchOverlay = document.querySelector('.search-overlay');
+    this.searchResults = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#search-overlay__results');
     this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-search-trigger');
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay__close');
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay');
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#search-term');
     this.events();
     this.isOverlayOpen = false;
+    this.isLoading = false;
+    this.prevValue;
+    this.typingTimer;
   }
 
   //events
@@ -130,9 +135,32 @@ class Search {
     this.openButton.on('click', this.openOverlay.bind(this));
     this.closeButton.on('click', this.closeOverlay.bind(this));
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
+    this.searchField.on("keyup", this.typingLogic.bind(this));
+  }
+
+  // Methods
+  typingLogic() {
+    if (this.searchField.val() != this.prevValue) {
+      clearTimeout(this.typingTimer);
+      if (this.searchField.val()) {
+        if (!this.isLoading) {
+          this.searchResults.html('<div class="spinner-loader"></div>');
+          this.isLoading = true;
+        }
+        this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+      } else {
+        this.searchResults.html('');
+        this.isLoading = false;
+      }
+    }
+    this.prevValue = this.searchField.val();
+  }
+  getResults() {
+    this.searchResults.html('result will show here....');
+    this.isLoading = false;
   }
   keyPressDispatcher(e) {
-    if (e.keyCode == 83 && !this.isOverlayOpen) {
+    if (e.keyCode == 83 && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()(input, texarea).is(':focus')) {
       this.openOverlay();
     }
     if (e.keyCode == 27 && this.isOverlayOpen) {
