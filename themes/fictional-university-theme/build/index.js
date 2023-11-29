@@ -156,8 +156,15 @@ class Search {
     this.prevValue = this.searchField.val();
   }
   getResults() {
-    this.searchResults.html('result will show here....');
-    this.isLoading = false;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON('http://fictional-university.local/wp-json/wp/v2/posts?search=' + this.searchField.val(), posts => {
+      this.searchResults.html(`
+                <h2 class="search-overlay__section-title">General Information</h2>
+                <ul class="link-list min-list">
+                    ${posts.map(post => `<li><a href="${post.link}">${post.title.rendered}</a></li>`).join('')}
+                    
+                </ul>
+            `);
+    });
   }
   keyPressDispatcher(e) {
     if (e.keyCode == 83 && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()(input, texarea).is(':focus')) {
