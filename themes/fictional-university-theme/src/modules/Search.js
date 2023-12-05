@@ -49,7 +49,45 @@ class Search{
         this.prevValue = this.searchField.val();
     }
     getResults(){
-        $.when(
+
+        //Code for custom Route
+
+        $.getJSON(universityData.root_url + '/wp-json/university/v1/search?term=' + this.searchField.val(), (results)=>{
+            this.searchResults.html(`
+                <div class="row">
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">General Information</h2>
+                        ${results.generalInfo.length ? '<ul class="link-list min-list">' : '<p>No result found.</p>' }
+                        ${results.generalInfo.map(post => `<li><a href="${post.permalink}">${post.title}</a> ${post.type == 'post' ? 'by '+ post.authorName : ''} </li>`
+                        ).join('')}
+                    
+                        ${ results.generalInfo.length ? '</ul>' : ''}
+                    </div>
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">Programs</h2>
+                        ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No programs found.<a href="${universityData.root_url}/programs">View all programs</a></p>` }
+                        ${results.programs.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`
+                        ).join('')}
+                    
+                        ${ results.programs.length ? '</ul>' : ''}
+                        <h2 class="search-overlay__section-title">Professors</h2>
+                    </div>
+                    <div class="one-third">
+                        <h2 class="search-overlay__section-title">Campuses</h2>
+                        ${results.campuses.length ? '<ul class="link-list min-list">' : `<p>No campus found.<a href="${universityData.root_url}/campuses">View all campuses</a></p>` }
+                        ${results.campuses.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`
+                        ).join('')}
+                    
+                        ${ results.campuses.length ? '</ul>' : ''}
+                        <h2 class="search-overlay__section-title">Events</h2>
+                    </div>
+                </div>
+            `);
+            this.isLoading = false;
+        })
+
+        // Code for default Rest API
+        /*$.when(
             $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), 
             $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())
             ).then((posts,pages) => {
@@ -65,7 +103,7 @@ class Search{
             this.isLoading = false;
             }, ()=>{
                 this.searchResults.html('<p>Unexpected error please try again!!</p>');
-            });
+            }); */
     }
     keyPressDispatcher(e){
         if(e.keyCode == 83 && !this.isOverlayOpen && !$(input, texarea).is(':focus')){

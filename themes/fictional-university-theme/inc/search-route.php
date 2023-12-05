@@ -27,7 +27,9 @@ function universitySearchResults($data){
         if(get_post_type() == 'post' OR get_post_type() == 'page'){
             array_push($results['generalInfo'], array(
                 'title' => get_the_title(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'type' => get_post_type(),
+                'authorName' => get_the_author()
             ));
         }
 
@@ -52,7 +54,7 @@ function universitySearchResults($data){
             ));
         }
 
-        if(get_post_type() == 'cpusam'){
+        if(get_post_type() == 'campus'){
             array_push($results['campuses'], array(
                 'title' => get_the_title(),
                 'permalink' => get_the_permalink()
