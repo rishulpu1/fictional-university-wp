@@ -116,11 +116,11 @@ class Search {
     // this.closeButton = document.querySelector('.search-overlay__close');
     // this.searchOverlay = document.querySelector('.search-overlay');
     this.searchHTML();
-    this.searchResults = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#search-overlay__results');
-    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.js-search-trigger');
-    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay__close');
-    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.search-overlay');
-    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#search-term');
+    this.searchResults = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
+    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
+    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
+    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.events();
     this.isOverlayOpen = false;
     this.isLoading = false;
@@ -133,8 +133,8 @@ class Search {
   events() {
     // this.openButton.addEventListener('click', this.openOverlay.bind());
     // this.closeButton.addEventListener('click', this.closeOverlay.bind());
-    this.openButton.on('click', this.openOverlay.bind(this));
-    this.closeButton.on('click', this.closeOverlay.bind(this));
+    this.openButton.on("click", this.openOverlay.bind(this));
+    this.closeButton.on("click", this.closeOverlay.bind(this));
     jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keyPressDispatcher.bind(this));
     this.searchField.on("keyup", this.typingLogic.bind(this));
   }
@@ -150,7 +150,7 @@ class Search {
         }
         this.typingTimer = setTimeout(this.getResults.bind(this), 750);
       } else {
-        this.searchResults.html('');
+        this.searchResults.html("");
         this.isLoading = false;
       }
     }
@@ -159,31 +159,56 @@ class Search {
   getResults() {
     //Code for custom Route
 
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(universityData.root_url + '/wp-json/university/v1/search?term=' + this.searchField.val(), results => {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(universityData.root_url + "/wp-json/university/v1/search?term=" + this.searchField.val(), results => {
       this.searchResults.html(`
                 <div class="row">
                     <div class="one-third">
                         <h2 class="search-overlay__section-title">General Information</h2>
-                        ${results.generalInfo.length ? '<ul class="link-list min-list">' : '<p>No result found.</p>'}
-                        ${results.generalInfo.map(post => `<li><a href="${post.permalink}">${post.title}</a> ${post.type == 'post' ? 'by ' + post.authorName : ''} </li>`).join('')}
+                        ${results.generalInfo.length ? '<ul class="link-list min-list">' : "<p>No result found.</p>"}
+                        ${results.generalInfo.map(post => `<li><a href="${post.permalink}">${post.title}</a> ${post.type == "post" ? "by " + post.authorName : ""} </li>`).join("")}
                     
-                        ${results.generalInfo.length ? '</ul>' : ''}
+                        ${results.generalInfo.length ? "</ul>" : ""}
                     </div>
                     <div class="one-third">
                         <h2 class="search-overlay__section-title">Programs</h2>
                         ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No programs found.<a href="${universityData.root_url}/programs">View all programs</a></p>`}
-                        ${results.programs.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`).join('')}
+                        ${results.programs.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`).join("")}
                     
-                        ${results.programs.length ? '</ul>' : ''}
+                        ${results.programs.length ? "</ul>" : ""}
                         <h2 class="search-overlay__section-title">Professors</h2>
+                        ${results.professors.length ? '<ul class="professor-cards">' : `<p>No professors found.</p>`}
+                          ${results.professors.map(post => `
+                                <li class="professor-card__list-item">
+                                    <a class="professor-card" href="${post.permalink}">
+                                        <img class="professor-card__image" src="${post.image}" />
+                                        <span class="professor-card__name">${post.title}</span>
+                                    </a>
+                                </li>
+                                `).join("")}
+                      
+                          ${results.professors.length ? "</ul>" : ""}
                     </div>
                     <div class="one-third">
                         <h2 class="search-overlay__section-title">Campuses</h2>
                         ${results.campuses.length ? '<ul class="link-list min-list">' : `<p>No campus found.<a href="${universityData.root_url}/campuses">View all campuses</a></p>`}
-                        ${results.campuses.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`).join('')}
+                        ${results.campuses.map(post => `<li><a href="${post.permalink}">${post.title}</a> </li>`).join("")}
                     
-                        ${results.campuses.length ? '</ul>' : ''}
+                        ${results.campuses.length ? "</ul>" : ""}
                         <h2 class="search-overlay__section-title">Events</h2>
+                        ${results.events.length ? "" : `<p>No events found.<a href="${universityData.root_url}/events">View all events</a></p>`}
+                          ${results.events.map(post => `
+                                <div class="event-summary">
+                                    <a class="event-summary__date t-center" href="${post.permalink}">
+                                        
+                                    <span class="event-summary__month">${post.month}</span>
+                                    <span class="event-summary__day">${post.day}</span>
+                                    </a>
+                                    <div class="event-summary__content">
+                                    <h5 class="event-summary__title headline headline--tiny"><a href="${post.permalink}">${post.title}</a></h5>
+                                    <p>${post.description} <a href="${post.permalink}" class="nu gray">Learn more</a></p>
+                                    </div>
+                                </div>
+                                `).join("")}
                     </div>
                 </div>
             `);
@@ -192,26 +217,26 @@ class Search {
 
     // Code for default Rest API
     /*$.when(
-        $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), 
-        $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())
-        ).then((posts,pages) => {
-            const combinedResult = posts[0].concat(pages[0]);
-            this.searchResults.html(`
-            <h2 class="search-overlay__section-title">General Information</h2>
-            ${ combinedResult.length ? '<ul class="link-list min-list">' : '<p>No result found.</p>' }
-                ${combinedResult.map(post => `<li><a href="${post.link}">${post.title.rendered}</a> ${post.type == 'post' ? 'by '+ post.authorName : ''} </li>`
-                ).join('')}
-                
-            ${ combinedResult.length ? '</ul>' : ''}
-        `);
-        this.isLoading = false;
-        }, ()=>{
-            this.searchResults.html('<p>Unexpected error please try again!!</p>');
-        }); */
+            $.getJSON(universityData.root_url + '/wp-json/wp/v2/posts?search=' + this.searchField.val()), 
+            $.getJSON(universityData.root_url + '/wp-json/wp/v2/pages?search=' + this.searchField.val())
+            ).then((posts,pages) => {
+                const combinedResult = posts[0].concat(pages[0]);
+                this.searchResults.html(`
+                <h2 class="search-overlay__section-title">General Information</h2>
+                ${ combinedResult.length ? '<ul class="link-list min-list">' : '<p>No result found.</p>' }
+                    ${combinedResult.map(post => `<li><a href="${post.link}">${post.title.rendered}</a> ${post.type == 'post' ? 'by '+ post.authorName : ''} </li>`
+                    ).join('')}
+                    
+                ${ combinedResult.length ? '</ul>' : ''}
+            `);
+            this.isLoading = false;
+            }, ()=>{
+                this.searchResults.html('<p>Unexpected error please try again!!</p>');
+            }); */
   }
 
   keyPressDispatcher(e) {
-    if (e.keyCode == 83 && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()(input, texarea).is(':focus')) {
+    if (e.keyCode == 83 && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()(input, texarea).is(":focus")) {
       this.openOverlay();
     }
     if (e.keyCode == 27 && this.isOverlayOpen) {
@@ -220,19 +245,19 @@ class Search {
   }
   openOverlay() {
     //console.log('open');
-    this.searchOverlay.addClass('search-overlay--active');
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').addClass('body-no-scroll');
-    this.searchField.val('');
+    this.searchOverlay.addClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
+    this.searchField.val("");
     setTimeout(() => this.searchField.focus(), 301);
     this.isOverlayOpen = true;
   }
   closeOverlay() {
-    this.searchOverlay.removeClass('search-overlay--active');
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').removeClass('body-no-scroll');
+    this.searchOverlay.removeClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
     this.isOverlayOpen = false;
   }
   searchHTML() {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('body').append(`
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
         <div class="search-overlay">
             <div class="search-overlay__top">
                 <div class="container">
